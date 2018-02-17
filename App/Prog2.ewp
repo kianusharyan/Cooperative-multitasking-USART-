@@ -357,6 +357,7 @@
                     <state>$PROJ_DIR$\..\..\Micrium\Software\uC-CPU\ARM-Cortex-M3\IAR</state>
                     <state>$PROJ_DIR$\..\..\Micrium\Software\uCOS-III\Ports\ARM-Cortex-M3\Generic\IAR</state>
                     <state>$PROJ_DIR$\..\..\Micrium\Software\uCOS-III\Source</state>
+                    <state>C:\Users\Kian\Documents\UMASS Lowell Masters Artifical Intelligence\Spring 2018\Embedded Real Time Systems EECE5720\Programs\Cooperative-multitasking-USART-\App\Headers</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1048,10 +1049,10 @@
         <group>
             <name>Headers</name>
             <file>
-                <name>$PROJ_DIR$\BfrPair.h</name>
+                <name>$PROJ_DIR$\Headers\BfrPair.h</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\Buffer.h</name>
+                <name>$PROJ_DIR$\Headers\Buffer.h</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\includes.h</name>
@@ -1060,16 +1061,13 @@
                 <name>$PROJ_DIR$\os_app_hooks.h</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\SerIODriver.h</name>
+                <name>$PROJ_DIR$\Headers\SerIODriver.h</name>
             </file>
         </group>
         <group>
             <name>Source</name>
             <file>
                 <name>$PROJ_DIR$\app_vect.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\BfrPair.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\Buffer.c</name>

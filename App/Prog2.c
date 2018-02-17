@@ -16,6 +16,7 @@ CHANGES
 01-25-2017 gpc -  Fixed call to PutByte() in function Process() to check >= 0, not > 0.
 01-25-2017 gpc -  Don't include BfrPair.h.
 01-29-2018 gpc -  Updated for spring 2018
+2-16-2018 ka   -  Added Tx part first      
 */
 #include <ctype.h>
 
@@ -48,7 +49,7 @@ CPU_INT32S main()
     return 0;
 }
 
-//#define TxTest // Uncomment to enable Tx Test mode
+#define TxTest // Uncomment to enable Tx Test mode
 //#define RxTest // Uncomment to enable Rx Test mode
 
 #if defined(TxTest)

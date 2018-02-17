@@ -1204,10 +1204,10 @@
         <group>
             <name>Headers</name>
             <file>
-                <name>$PROJ_DIR$\BfrPair.h</name>
+                <name>$PROJ_DIR$\Headers\BfrPair.h</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\Buffer.h</name>
+                <name>$PROJ_DIR$\Headers\Buffer.h</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\includes.h</name>
@@ -1216,16 +1216,13 @@
                 <name>$PROJ_DIR$\os_app_hooks.h</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\SerIODriver.h</name>
+                <name>$PROJ_DIR$\Headers\SerIODriver.h</name>
             </file>
         </group>
         <group>
             <name>Source</name>
             <file>
                 <name>$PROJ_DIR$\app_vect.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\BfrPair.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\Buffer.c</name>
