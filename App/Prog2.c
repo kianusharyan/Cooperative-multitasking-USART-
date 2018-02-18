@@ -8,15 +8,14 @@ PURPOSE
 Read a text file from the RS232 Rx, "process" it, and output the result to the RS22 Tx.
 
 DEMONSTRATES
-Cooperative multitasking
-Concurrent, polled I/O
+Cooperative multitasking Concurrent, polled I/O
 
 CHANGES
 01-19-2017 gpc -  Created for EECE472 / EECE572
 01-25-2017 gpc -  Fixed call to PutByte() in function Process() to check >= 0, not > 0.
 01-25-2017 gpc -  Don't include BfrPair.h.
 01-29-2018 gpc -  Updated for spring 2018
-2-16-2018 ka   -  Added Tx part first      
+2-16-2018 ka   -  Added Tx part first
 */
 #include <ctype.h>
 
@@ -43,9 +42,9 @@ CPU_INT32S main()
 
     BSP_Ser_Init(BaudRate);     /* Initialize the RS232 interface. */
 
-//  Run the application.    
+//  Run the application.
     AppMain();
-    
+
     return 0;
 }
 
@@ -62,17 +61,17 @@ void AppMain(void)
 {
   // Create and Initialize iBfr and oBfr.
   InitSerIO();
-  
+
   // Repeatedly output alphabets to the Tx.
   for (;;)
     {
     static CPU_INT16S c = 'A';
-    
+
     while (TRUE)
       {
       if (PutByte(c) < 0)
         break;
-      
+
       if (c < 'Z')
         c++;
       else
@@ -98,7 +97,7 @@ void AppMain(void)
   while(TRUE)
     {
     CPU_INT16S c;
-      
+
     ServiceRx();
     for (;;)
       {
@@ -128,22 +127,22 @@ be output as follows.
 2. If "NumDupes" is positive, output each byte and then duplicate it "NumDupes" times, or
 3. If "NumDupes" is negative, output the bytes skipping "-NumDupes" bytes at a time.
 
-Also, "ProcTime" may be set to simulate time spent processing an input byte to 
+Also, "ProcTime" may be set to simulate time spent processing an input byte to
 produce an output byte.
 */
 void Process(void)
 {
-  /* If NumDupes is not defined outside of the code, define it. */  
-  #ifndef NumDupes  
+  /* If NumDupes is not defined outside of the code, define it. */
+  #ifndef NumDupes
   #define NumDupes 0      /* Number of times to repeat or skip bytes */
   #endif
-    
-  /* If ProcTime is not defined outside of the code, define it. */  
-  #ifndef ProcTime  
+
+  /* If ProcTime is not defined outside of the code, define it. */
+  #ifndef ProcTime
   #define ProcTime 0      /* Number of counts to delay to simulate processing time */
   #endif
-  
-  static CPU_INT08U outsLeft = 0;       /* Output repetition counter */  
+
+  static CPU_INT08U outsLeft = 0;       /* Output repetition counter */
   static CPU_INT16S c;                  /* Next character */
   static CPU_INT32U count = ProcTime;   /* Counter to simulate time spent in processing */
   static CPU_INT08U numSkips = (NumDupes<0) ? -NumDupes : 0;/* Number of input bytes to skip */
@@ -153,7 +152,7 @@ void Process(void)
     {
     // Try to read the next character.
     c = GetByte();
-    
+
     // Check whether or not a byte was available and not skipping.
     if (c < 0 || numSkips > 0)
       {
@@ -163,7 +162,7 @@ void Process(void)
       return;                   // No byte available or skipped
       }
     }
-  
+
   // If done skipping input, reset skip counter.
   if (numSkips == 0)
     numSkips = (NumDupes<0) ? -NumDupes : 0;
@@ -172,11 +171,11 @@ void Process(void)
   while (count > 0)
     --count;
   count = ProcTime;
-  
+
   // If starting a new output byte, reset output counter.
   if (outsLeft == 0)
     outsLeft = ((NumDupes>0) ? NumDupes : 0) + 1;
-  
+
   // If output characters are left, try to output one.
   // 01-25-2017 gpc -  Fixed call to PutByte() in function Process() to check >= 0, not > 0.
   if(PutByte(toupper(c)) >= 0)
