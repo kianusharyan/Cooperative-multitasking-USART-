@@ -61,14 +61,10 @@ void ServiceTx()
     }
     else
     {
-      if (PutBfrClosed(&oBfrPair))
-      {
-        return;
-      }
-      else
+      if (GetBfrClosed(&oBfrPair))      //getBfr is not empty, OK to extract byte
       {
         c = GetBfrRemByte(&oBfrPair);
-        USART2->DR = '2';
+        USART2->DR = c;
         return;
       }
     }
