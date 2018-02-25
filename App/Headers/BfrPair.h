@@ -108,7 +108,8 @@ PARAMETERS:
 buffer pair address
 
 RETURN VALUE:
-buffer pair address TRUE if the get
+buffer pair address TRUE if the get is closed,
+otherwise FALSE
 */
 CPU_BOOLEAN GetBfrClosed(BfrPair *bfrPair);
 

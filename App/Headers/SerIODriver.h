@@ -96,4 +96,4 @@ PARAMETERS: VOID
 
 RETURN VALUE: VOID
 */
-void ServiceTx(void);
+void ServiceRx(void);
