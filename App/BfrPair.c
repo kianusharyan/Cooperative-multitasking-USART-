@@ -81,6 +81,10 @@ CPU_BOOLEAN BfrPairSwappable(BfrPair *bfrPair)
       //swaping buffers is possible
       return TRUE;
     }
+    else
+    {
+      return FALSE;
+    }
   }
   else
   {
@@ -89,6 +93,15 @@ CPU_BOOLEAN BfrPairSwappable(BfrPair *bfrPair)
 }
 
 void BfrPairSwap(BfrPair *bfrPair){
-  !(bfrPair->putBfrNum); //toggle the put buffer
+  int i;
+  for(i = 0; i < 4; i++)
+ //   BSP_Ser_Printf("value of put buffer[%d] = %d \n", i, bfrPair->buffers[bfrPair->putBfrNum].buffer[i]);
+   bfrPair->buffers[!bfrPair->putBfrNum].closed = bfrPair->buffers[bfrPair->putBfrNum].closed;
+  bfrPair->buffers[!bfrPair->putBfrNum].getIndex = bfrPair->buffers[bfrPair->putBfrNum].getIndex;
+  bfrPair->buffers[!bfrPair->putBfrNum].putIndex = bfrPair->buffers[bfrPair->putBfrNum].putIndex;
+  bfrPair->putBfrNum = !bfrPair->putBfrNum;             //toggle the put buffer address space pointer
+
+  for(i = 0; i < 4; i++)
+ //   BSP_Ser_Printf("value of get buffer[%d] = %d \n", i, bfrPair->buffers[!bfrPair->putBfrNum].buffer[i]);
   PutBfrReset(bfrPair);
 }

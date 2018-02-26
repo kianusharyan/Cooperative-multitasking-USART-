@@ -39,7 +39,7 @@ RETURN VALUE: VOID
 void InitSerIO(void);
 
 /*
-PURPOSE: MUTATOR f(n)
+PURPOSE: 
 If the oBfrPair put buffer is closed and the oBfrPair get buffer is not
 closed, swap the get buffer and put buffer.
 If the oBfrPair put buffer is not full, write one byte into the buffer, and
@@ -70,7 +70,7 @@ RETURN VALUE: VOID
 void ServiceTx(void);
 
 /*
-PURPOSE: ACCESSOR f(n)
+PURPOSE: 
 If the iBfrPair put buffer is closed and the iBfrPair get buffer is not
 closed, swap the get buffer and put
 buffer.

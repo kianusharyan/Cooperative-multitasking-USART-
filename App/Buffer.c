@@ -80,7 +80,7 @@ buffer is full.
 */
 CPU_BOOLEAN BfrFull(Buffer *bfr)
 {
-  return (bfr->putIndex >= bfr->size);              //todo: add enhanced if
+  return (bfr->putIndex >= bfr->size);              
 }
 
 /*
@@ -90,7 +90,7 @@ buffer is empty.
 */
 CPU_BOOLEAN BfrEmpty(Buffer *bfr)
 {
-  return (bfr->putIndex <= bfr->getIndex);            //todo: add enhanced if
+  return (bfr->putIndex <= bfr->getIndex);            
 }
 
 /*
@@ -105,7 +105,7 @@ CPU_INT16S BfrAddByte(Buffer *bfr,
   if(BfrFull(bfr))
     return -1;
 
-  theByte = bfr->buffer[bfr->putIndex++];
+  bfr->buffer[bfr->putIndex++] = theByte;
   if(BfrFull(bfr))
     BfrClose(bfr);
   return theByte;
@@ -137,4 +137,6 @@ CPU_INT16S BfrRemByte(Buffer *bfr)
 
   if(BfrEmpty(bfr))
     BfrOpen(bfr);
+  
+  return theByte;
 }

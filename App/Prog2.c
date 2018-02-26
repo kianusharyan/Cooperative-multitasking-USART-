@@ -48,7 +48,7 @@ CPU_INT32S main()
     return 0;
 }
 
-#define TxTest // Uncomment to enable Tx Test mode
+//#define TxTest // Uncomment to enable Tx Test mode
 //#define RxTest // Uncomment to enable Rx Test mode
 
 #if defined(TxTest)
@@ -59,6 +59,8 @@ Test the operation of the RS232 Tx.
 */
 void AppMain(void)
 {
+      BSP_Ser_Printf("Testing Tx\n");
+
   // Create and Initialize iBfr and oBfr.
   InitSerIO();
 
@@ -89,6 +91,8 @@ Test the operation of the RS232 Tx and Rx together.
 */
 void AppMain(void)
 {
+        BSP_Ser_Printf("Testing Rx\n");
+
   CPU_BOOLEAN putPending = FALSE;
 
   InitSerIO();
