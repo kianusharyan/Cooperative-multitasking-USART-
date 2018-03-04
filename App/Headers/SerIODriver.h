@@ -12,6 +12,7 @@ ServiceTx() and ServiceRx().
 
 CHANGES
 2-18-2018 ka   -  Added stubs and structures
+3-2-2018 ka    -  Add interrupt frame
 
 */
 #pragma once
@@ -97,3 +98,15 @@ PARAMETERS: VOID
 RETURN VALUE: VOID
 */
 void ServiceRx(void);
+
+/*
+PURPOSE
+Call ServiceRx() to handle Rx interrupts and then call ServiceTx()
+to handle Tx interrupts.
+
+PARAMETERS: VOID
+
+RETURN VALUE: VOID
+*/
+
+void SerialISR(void);

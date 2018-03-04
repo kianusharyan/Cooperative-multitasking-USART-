@@ -10,6 +10,7 @@ Required Buffer Data type properties and function prototypes.
 
 CHANGES
 2-18-2018 ka   -  Added stubs and structures
+3-2-2018 ka    - make closed volatile
 
 */
 
@@ -21,7 +22,7 @@ CHANGES
 
 typedef struct
 {
-    CPU_BOOLEAN closed; /* -- True if buffer has data ready to process, ready to be emptied or being emptied */
+    volatile CPU_BOOLEAN closed; /* -- True if buffer has data ready to process, ready to be emptied or being emptied */
     /* -- False if buffer is not ready to process, ready to fill or being filled */
     CPU_INT16U size; /* -- The capacity of the buffer in bytes */
     CPU_INT16U putIndex; /* -- The position where the next byte is added */

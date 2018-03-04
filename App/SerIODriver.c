@@ -13,6 +13,7 @@ ServiceTx() and ServiceRx().
 CHANGES
 2-18-2018 ka   -  Added stubs and structures
 2-24-2018 ka   -  Defined Buffer, BfrPair, SerIODriver routines
+3-2-2018 ka    -  Add interrupt frame
 
 */
 #include "SerIODriver.h"
@@ -39,6 +40,11 @@ void InitSerIO(void)
 {
   BfrPairInit(&iBfrPair, iBfr0Space, iBfr1Space, BfrSize);
   BfrPairInit(&oBfrPair, oBfr0Space, oBfr1Space, BfrSize);
+  
+  //todo: unmask the Rx and Tx interrupts
+  
+  //todo: Enable IRQ38(USART)
+  
 }
 
 CPU_INT16S PutByte(CPU_INT16S txChar)
@@ -52,6 +58,7 @@ CPU_INT16S PutByte(CPU_INT16S txChar)
   if (PutBfrAddByte(&oBfrPair, txChar) == -1)
     return -1;
   else
+    //todo: unmask Tx interrupt
     return txChar;
 }
 void ServiceTx()
@@ -69,53 +76,44 @@ void ServiceTx()
         USART2->DR = c;
         return;
       }
+      else
+      {
+          //todo: mask the Tx and return
+      }
     }
 }
 
-/*
-PURPOSE
-If RXNE = 1 and the iBfrPair put buffer is not full, then read a byte
-from the UART Rx and add it to the put buffer. If RXNE = 0 or the put
-buffer is full, just return.
 
-PARAMETERS: VOID
-
-RETURN VALUE: VOID
-*/
 void ServiceRx(void)
 {
     if(!(USART2->SR & USART_RXNE) | PutBfrClosed(&iBfrPair))
     {
       return;                           //RXNE = 0
     }
+
+    PutBfrAddByte(&iBfrPair, USART2->DR);
     
-    if (!PutBfrClosed(&iBfrPair))        //put buffer is not full 
-      PutBfrAddByte(&iBfrPair, USART2->DR);                               //todo: verify byte/s               
+    //if (PutBfrClosed(&iBfrPair))
+    //todo: mask the Rx interrupt 
+      
+      
 }
 
-
-/*
-PURPOSE: 
-If the iBfrPair put buffer is closed and the iBfrPair get buffer is not
-closed, swap the get buffer and put
-buffer.
-If the iBfrPair get buffer is not empty, remove and return the next
-byte from the buffer. if the buffer is empty, return -1 indicating failure
-
-PARAMETERS: VOID
-
-RETURN VALUE: On success, GetByte() returns the character read
-from get buffer. If the get buffer is empty, GetByte()
-returns –1 to indicate failure.
-
-*/
 CPU_INT16S GetByte(void)
 {
     if (BfrPairSwappable(&iBfrPair))
     BfrPairSwap(&iBfrPair);
-    
+
     if (GetBfrClosed(&iBfrPair))
+      //todo: unmask the Rx interrupt
       return GetBfrRemByte(&iBfrPair);
     else
       return -1;
+}
+
+void SerialISR()
+{
+      ServiceRx();
+      ServiceTx();
+      
 }

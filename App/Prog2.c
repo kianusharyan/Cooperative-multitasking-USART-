@@ -15,13 +15,12 @@ CHANGES
 01-25-2017 gpc -  Fixed call to PutByte() in function Process() to check >= 0, not > 0.
 01-25-2017 gpc -  Don't include BfrPair.h.
 01-29-2018 gpc -  Updated for spring 2018
-2-16-2018 ka   -  Added Tx part first
 */
 #include <ctype.h>
 
 #include "includes.h"
 #include "SerIODriver.h"
-
+#include "Intrpt.h"
 /*----- c o n s t a n t    d e f i n i t i o n s -----*/
 
 // Define RS232 baud rate.
@@ -36,8 +35,9 @@ void AppMain(void);
 CPU_INT32S main()
 {
 //  Initialize the STM32F107 eval. board.
-    BSP_IntDisAll();            /* Disable all interrupts. */
-
+    
+    IntDis();
+  
     BSP_Init();                 /* Initialize BSP functions */
 
     BSP_Ser_Init(BaudRate);     /* Initialize the RS232 interface. */
@@ -63,6 +63,9 @@ void AppMain(void)
 
   // Create and Initialize iBfr and oBfr.
   InitSerIO();
+  
+  //Enable interrupts
+  IntEn();
 
   // Repeatedly output alphabets to the Tx.
   for (;;)
@@ -138,7 +141,7 @@ void Process(void)
 {
   /* If NumDupes is not defined outside of the code, define it. */
   #ifndef NumDupes
-  #define NumDupes 0      /* Number of times to repeat or skip bytes */
+  #define NumDupes 3      /* Number of times to repeat or skip bytes */
   #endif
 
   /* If ProcTime is not defined outside of the code, define it. */
