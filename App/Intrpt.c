@@ -14,6 +14,8 @@ interrupt disables.
 CHANGES
 02-10-2014  gpc - Updated for spring 2014 16.572 Program 3
 */
+#include "cortexm3_macro.h"
+#include "stm32f10x_nvic.h"
 
 // Level of nesting of interrupt disables.
 static CPU_INT16S disableCnt = 0;
@@ -26,7 +28,7 @@ Set PRIMASK = 1 to disable interrupts.
 
 void IntDis(void)
 {
- 	asm(" cpsid i");
+        asm(" cpsid i");
 	++disableCnt;
 }
 

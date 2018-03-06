@@ -30,12 +30,12 @@ void PutBfrReset(BfrPair *bfrPair)
 
 CPU_INT08U *PutBfrAddr(BfrPair *bfrPair)
 {
-  return (bfrPair->buffers[bfrPair->putBfrNum].buffer);  //todo: verify -> vs . accesses pointer
+  return (bfrPair->buffers[bfrPair->putBfrNum].buffer);  
 }
 
 CPU_INT08U *GetBfrAddr(BfrPair *bfrPair)
 {
-  return bfrPair->buffers[!bfrPair->putBfrNum].buffer;   //todo: verify -> vs . accesses pointer
+  return bfrPair->buffers[!bfrPair->putBfrNum].buffer;   
 }
 
 CPU_BOOLEAN PutBfrClosed(BfrPair *bfrPair)

@@ -83,7 +83,7 @@ void AppMain(void)
         c = 'A';
       }
     // If possible, output a byte from the oBfrPair Get Buffer to the UART Tx.
-    ServiceTx();
+   // ServiceTx();
     }
 }
 #elif defined(RxTest)
@@ -99,13 +99,14 @@ void AppMain(void)
   CPU_BOOLEAN putPending = FALSE;
 
   InitSerIO();
+  IntEn();
 
   // Repeatedly read a byte from the Rx and echo it to the Tx.
   while(TRUE)
     {
     CPU_INT16S c;
 
-    ServiceRx();
+   // ServiceRx();
     for (;;)
       {
       if (!putPending)
@@ -120,7 +121,7 @@ void AppMain(void)
       else
         putPending  = FALSE;
       }
-    ServiceTx();
+    //ServiceTx();
     }
 }
 #else
@@ -199,17 +200,15 @@ void AppMain(void)
   // Create and Initialize iBfrPair and oBfrPair.
   InitSerIO();
 
+  //IntEn();
   // Multitasking Executive Loop: Tasks are executed round robin.
   for (;;)
     {
-    // Service the RS232 receiver.
-    ServiceRx();
 
+    //ServiceRx();  
     // Process iBfrPair to oBfrPair
     Process();
-
-    // Service the RS232 transmitter.
-    ServiceTx();
+    //ServiceTx();
     }
 }
 #endif

@@ -30,6 +30,7 @@
 */
 
 #include <includes.h>
+#include "SerIODriver.h"
 
 
 /*
@@ -135,7 +136,7 @@ __root  const  APP_INTVECT_ELEM  __vector_table[] @ ".intvec" = {
     BSP_IntHandlerSPI1,                                         /* 51, INTISR[ 35]  SPI1 Global Interrupt.              */
     BSP_IntHandlerSPI2,                                         /* 52, INTISR[ 36]  SPI2 Global Interrupt.              */
     BSP_IntHandlerUSART1,                                       /* 53, INTISR[ 37]  USART1 Global Interrupt.            */
-    BSP_IntHandlerUSART2,                                       /* 54, INTISR[ 38]  USART2 Global Interrupt.            */
+    SerialISR,                                       /* 54, INTISR[ 38]  USART2 Global Interrupt.            */
     BSP_IntHandlerUSART3,                                       /* 55, INTISR[ 39]  USART3 Global Interrupt.            */
     BSP_IntHandlerEXTI15_10,                                    /* 56, INTISR[ 40]  EXTI Line [15:10] Interrupts.       */
     BSP_IntHandlerRTCAlarm,                                     /* 57, INTISR[ 41]  RTC Alarm EXT Line Interrupt.       */

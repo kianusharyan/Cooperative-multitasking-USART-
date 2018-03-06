@@ -23,6 +23,17 @@ CHANGES
 #define USART_RXNE  0x20  // Rx not Empty Status Bit
 #define USART_TXE   0x80  // Tx Empty Status Bit
 
+#define USART_ETR   0x20AC //Init Control Register bits
+
+#define USART_UNMASK_RXNEIE 0x20
+#define USART_UNMASK_TXEIE 0x80
+
+#define USART_MASK_RXNEIE 0x208C
+#define USART_MASK_TXEIE 0x202C
+
+#define SETENA1 (*((CPU_INT32U *) 0xE000E104))          //SETENA pointer to base address
+#define USART2ENA 0x00000040                            //bit 6 IRQ 38 mask
+
 /*----- g l o b a l   d e c l a r a t i o n s -----*/
 
 // Allocate the input buffer pair.
@@ -38,28 +49,29 @@ static CPU_INT08U oBfr1Space[BfrSize];
 
 void InitSerIO(void)
 {
-  BfrPairInit(&iBfrPair, iBfr0Space, iBfr1Space, BfrSize);
-  BfrPairInit(&oBfrPair, oBfr0Space, oBfr1Space, BfrSize);
-  
-  //todo: unmask the Rx and Tx interrupts
-  
-  //todo: Enable IRQ38(USART)
-  
+    BfrPairInit(&iBfrPair, iBfr0Space, iBfr1Space, BfrSize);
+    BfrPairInit(&oBfrPair, oBfr0Space, oBfr1Space, BfrSize);
+    
+    //enable the Rx and Tx interrupts
+    USART2->CR1 = USART_ETR;
+    //Enable IRQ38(USART)
+    SETENA1 = USART2ENA;
 }
 
 CPU_INT16S PutByte(CPU_INT16S txChar)
 {
-  if (BfrPairSwappable(&oBfrPair))
-    BfrPairSwap(&oBfrPair);
+    if (BfrPairSwappable(&oBfrPair))
+      BfrPairSwap(&oBfrPair);
 
-  if (PutBfrClosed(&oBfrPair))
-    return -1;
+    if (PutBfrClosed(&oBfrPair))
+      return -1;
 
-  if (PutBfrAddByte(&oBfrPair, txChar) == -1)
-    return -1;
-  else
-    //todo: unmask Tx interrupt
-    return txChar;
+    if (PutBfrAddByte(&oBfrPair, txChar) == -1)
+      return -1;
+    else
+      //unmask Tx interrupt
+        USART2->CR1 = USART2->CR1 | USART_UNMASK_TXEIE;
+      return txChar;
 }
 void ServiceTx()
 {
@@ -78,7 +90,8 @@ void ServiceTx()
       }
       else
       {
-          //todo: mask the Tx and return
+          //mask TXEIE
+          USART2->CR1 = USART2->CR1 & USART_MASK_TXEIE; 
       }
     }
 }
@@ -93,9 +106,9 @@ void ServiceRx(void)
 
     PutBfrAddByte(&iBfrPair, USART2->DR);
     
-    //if (PutBfrClosed(&iBfrPair))
-    //todo: mask the Rx interrupt 
-      
+    if (PutBfrClosed(&iBfrPair))
+      //mask RXNEIE
+      USART2->CR1 = USART2->CR1 & USART_MASK_RXNEIE;     
       
 }
 
@@ -105,8 +118,11 @@ CPU_INT16S GetByte(void)
     BfrPairSwap(&iBfrPair);
 
     if (GetBfrClosed(&iBfrPair))
-      //todo: unmask the Rx interrupt
+    {
+      //unmask the Rx interrupt
+      USART2->CR1 = USART2->CR1 | USART_UNMASK_RXNEIE;         
       return GetBfrRemByte(&iBfrPair);
+    }
     else
       return -1;
 }
@@ -115,5 +131,5 @@ void SerialISR()
 {
       ServiceRx();
       ServiceTx();
-      
+      return;
 }
